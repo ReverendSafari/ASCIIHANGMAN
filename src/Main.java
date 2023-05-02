@@ -18,11 +18,14 @@ class wordBank {
     ArrayList<String> wordBankCustom  = new ArrayList<String>();
 
     public static void createWordBank() {
+        Scanner s = new Scanner(System.in);
+        String currentWord;
         String stop = "";
-        /*while(stop == "") {
-
-//TEST COMMENT
-        }*/
+        while(stop == "") {
+            currentWord = s.nextLine().trim();
+            wordBankCustom.add(currentWord);
+        }
+    }
     }
 
 }
