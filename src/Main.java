@@ -6,6 +6,13 @@ public class Main {
     }
 }
 // hello
+class HangMan {
+    String secretWord;
+    int incorrectGuesses;
+    char currentGuess;
+    int maxGuesses;
+    Boolean gameOver;
+}
 class wordBank {
     ArrayList<String> cars = new ArrayList<String>();
     ArrayList<String> wordBankCustom  = new ArrayList<String>();
