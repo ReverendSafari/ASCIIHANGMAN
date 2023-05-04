@@ -1,11 +1,11 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello Hangman!");
     }
 }
-// hello
 class HangMan {
     String secretWord;
     int incorrectGuesses;
@@ -13,9 +13,16 @@ class HangMan {
     int maxGuesses;
     Boolean gameOver;
 }
+class HangManClass {
+    int Hangman;
+    String PlayerName;
+    String[] StatusLabel;
+    String[] WordLabel;
+    String[] GuessesLabel;
+}
 class wordBank {
     ArrayList<String> cars = new ArrayList<String>();
-    ArrayList<String> wordBankCustom  = new ArrayList<String>();
+    static ArrayList<String> wordBankCustom  = new ArrayList<String>();
 
     public static void createWordBank() {
         Scanner s = new Scanner(System.in);
@@ -26,6 +33,5 @@ class wordBank {
             wordBankCustom.add(currentWord);
         }
     }
-    }
-
 }
+
