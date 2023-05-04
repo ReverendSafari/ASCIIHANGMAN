@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 class wordBank {
-    static ArrayList<String> wordBankStatic = new ArrayList<String>();
+    static ArrayList<String> wordBankStatic = new ArrayList<>(Arrays.asList("apple", "banana", "cherry", "date"));
     static ArrayList<String> wordBankCustom  = new ArrayList<String>();
 
     public static void createWordBank() {
@@ -43,9 +44,9 @@ class wordBank {
     }
     public static void main(String[] args) {
         //testing wordbank
-        wordBank r = new wordBank();
-        createWordBank();
-        r.printBank();
+//        wordBank r = new wordBank();
+//        createWordBank();
+//        r.printBank();
 
         //testing basic board prints
         HangManGame testGame = new HangManGame();
@@ -54,7 +55,8 @@ class wordBank {
         testGame.addIncorrect("r");
         testGame.addIncorrect("s");
         testGame.addIncorrect("v");
-
+        testGame.setSecretWord(true);
+        System.out.println(testGame.getWord());
 
         testGame.getStage(3);
         testGame.getIncorrect();
@@ -79,7 +81,7 @@ class HangMan {
         System.out.println("Please enter a letter to guess: ");
         this.currentGuess = s.next().trim();
     }
-    void Hangman(boolean c) {
+    void setSecretWord(boolean c) {
         if (c) {
             secretWord = wordBank.generateRandomWord(c);
         }
@@ -94,6 +96,9 @@ class HangMan {
             return gameOver;
         }
         return gameOver;
+    }
+    public String getWord() {
+        return secretWord;
     }
 }
 
