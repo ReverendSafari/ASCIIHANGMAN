@@ -42,9 +42,23 @@ class wordBank {
         }
     }
     public static void main(String[] args) {
+        //testing wordbank
         wordBank r = new wordBank();
         createWordBank();
         r.printBank();
+
+        //testing basic board prints
+        HangManGame testGame = new HangManGame();
+        testGame.setPlayerLabel("Safari");
+        testGame.printPlayerLabel();
+        testGame.addIncorrect("r");
+        testGame.addIncorrect("s");
+        testGame.addIncorrect("v");
+
+
+        testGame.getStage(3);
+        testGame.getIncorrect();
+
     }
 
 }
@@ -53,19 +67,18 @@ class wordBank {
 class HangMan {
     String secretWord;
     int incorrectGuesses;
-
-    public char getCurrentGuess() {
-        return currentGuess;
-    }
-
-    public void setCurrentGuess(char currentGuess) {
-        this.currentGuess = currentGuess;
-    }
-
-    char currentGuess;
+    String currentGuess;
     int maxGuesses = 6;
     Boolean gameOver = false;
 
+    public String getCurrentGuess() {
+        return currentGuess;
+    }
+    public void setCurrentGuess() {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Please enter a letter to guess: ");
+        this.currentGuess = s.next().trim();
+    }
     void Hangman(boolean c) {
         if (c) {
             secretWord = wordBank.generateRandomWord(c);
@@ -85,7 +98,49 @@ class HangMan {
 }
 
 class HangManGame extends HangMan {
-    String[] statusLabel;
+    //
+    String statusLabel;
+
+    public void setPlayerLabel(String playerLabel) {
+        this.playerLabel = playerLabel;
+    }
+    public void printPlayerLabel() {
+        System.out.println("Player: " + playerLabel);
+    }
+
     String playerLabel;
-    String[] boardStates;
+    String incorrectBank;
+    String[] hangmanStages = new String[] {
+            "+--+ \n|    \n|    \n|    \n|    \n|    \n=========",
+            "+--+ \n|  O \n|    \n|    \n|    \n|    \n=========",
+            "+--+ \n|  O \n|  |  \n|  |  \n|    \n|    \n=========",
+            "+--+ \n|  O \n| /|  \n|  |  \n|    \n|    \n=========",
+            "+--+ \n|  O \n| /|\\ \n|  |  \n|    \n|    \n=========",
+            "+--+ \n|  O \n| /|\\ \n|  |  \n| /   \n|    \n=========",
+            "+--+ \n|  O \n| /|\\ \n|  |  \n| / \\ \n|    \n========="
+    };
+
+    public void getStage(int n) {
+        System.out.println(hangmanStages[n]);
+    }
+    public void addIncorrect(String s) {
+        incorrectBank = incorrectBank + " " + s;
+    }
+    public void getIncorrect() {
+        System.out.println("Incorrect Guesses:" + incorrectBank.substring(4));
+    }
+    public void setStatusLabel() {
+        statusLabel = secretWord.replaceAll("[a-zA-Z]", "_");
+    }
+    public void getStatusLabel() {
+        System.out.println(statusLabel);
+    }
+    public void updateStatusLabel() {
+        char c = getCurrentGuess().charAt(0);
+        for(int i = 0; i < statusLabel.length(); i++) {
+            if(secretWord.charAt(i) == c) {
+                statusLabel = statusLabel.substring(0,i) + c + statusLabel.substring(i+1);
+            }
+        }
+    }
 }
