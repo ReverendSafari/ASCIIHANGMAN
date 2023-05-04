@@ -34,7 +34,7 @@ class wordBank {
         else {
             int limit = wordBankStatic.size();
             int randomNum = selector.nextInt(limit);
-            return wordBankCustom.get(randomNum);
+            return wordBankStatic.get(randomNum);
         }
     }
     public void printBank() {
@@ -55,11 +55,20 @@ class wordBank {
         testGame.addIncorrect("r");
         testGame.addIncorrect("s");
         testGame.addIncorrect("v");
-        testGame.setSecretWord(true);
-        System.out.println(testGame.getWord());
+        testGame.setSecretWord(false);
+        testGame.setStatusLabel();
+        testGame.setCurrentGuess();
+        testGame.updateStatusLabel();
+        testGame.getStatusLabel();
+        testGame.setCurrentGuess();
+        testGame.updateStatusLabel();
+        testGame.getStatusLabel();
+        testGame.setCurrentGuess();
+        testGame.updateStatusLabel();
+        testGame.getStatusLabel();
 
-        testGame.getStage(3);
-        testGame.getIncorrect();
+        /*testGame.getStage(3);
+        testGame.getIncorrect();*/
 
     }
 
