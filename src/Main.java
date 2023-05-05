@@ -17,13 +17,14 @@ class wordBank {
             if (currentWord.equals("1")) {
                 stop = false;
                 System.out.println("Word Bank is complete!");
-
             }
             else {
-                wordBankCustom.add(currentWord);
+                wordBankCustom.add(currentWord.toLowerCase());
             }
         }
     }
+
+
     public static String generateRandomWord(boolean r) {
         Random selector = new Random();
         if(r) {
@@ -43,32 +44,8 @@ class wordBank {
         }
     }
     public static void main(String[] args) {
-        //testing wordbank
-//        wordBank r = new wordBank();
-//        createWordBank();
-//        r.printBank();
-
-        //testing basic board prints
-        HangManGame testGame = new HangManGame();
-        testGame.setPlayerLabel("Safari");
-        testGame.printPlayerLabel();
-        testGame.addIncorrect("r");
-        testGame.addIncorrect("s");
-        testGame.addIncorrect("v");
-        testGame.setSecretWord(false);
-        testGame.setStatusLabel();
-        testGame.setCurrentGuess();
-        testGame.updateStatusLabel();
-        testGame.getStatusLabel();
-        testGame.setCurrentGuess();
-        testGame.updateStatusLabel();
-        testGame.getStatusLabel();
-        testGame.setCurrentGuess();
-        testGame.updateStatusLabel();
-        testGame.getStatusLabel();
-
-        /*testGame.getStage(3);
-        testGame.getIncorrect();*/
+        HangManGame game = new HangManGame();
+        game.playGame();
 
     }
 
@@ -76,6 +53,12 @@ class wordBank {
 
 // hello
 class HangMan {
+    /*
+    Need a method to check current guess, and increment incorrectGuesses, and add to incorrect bank OR update status label
+    Need a way to make sure they are just typing one letter
+    Make Sure everything is getting lowercased
+
+    */
     String secretWord;
     int incorrectGuesses;
     String currentGuess;
@@ -87,9 +70,23 @@ class HangMan {
     }
     public void setCurrentGuess() {
         Scanner s = new Scanner(System.in);
-        System.out.println("Please enter a letter to guess: ");
-        this.currentGuess = s.next().trim();
+        String input;
+        boolean isValid;
+
+        do {
+            System.out.println("Please enter a letter to guess: ");
+            input = s.next().trim().toLowerCase();
+            isValid = input.matches("[a-z]");
+
+            if (!isValid) {
+                System.out.println("Invalid input. Please enter a single letter (a-z).");
+            }
+        } while (!isValid);
+
+        this.currentGuess = input;
     }
+
+
     void setSecretWord(boolean c) {
         if (c) {
             secretWord = wordBank.generateRandomWord(c);
@@ -106,13 +103,21 @@ class HangMan {
         }
         return gameOver;
     }
+
     public String getWord() {
         return secretWord;
     }
 }
 
 class HangManGame extends HangMan {
-    //
+    /*
+    Need to create game LOOP
+    Need to create Starting Screen
+    Game loop should be based on one big function, that prints the player name, then game board then incorrect bank then status bank --
+    would be best if we could clear terminal before each function call
+    Make sure custom words can't have numbers or non letters?
+
+     */
     String statusLabel;
 
     public void setPlayerLabel(String playerLabel) {
@@ -123,7 +128,7 @@ class HangManGame extends HangMan {
     }
 
     String playerLabel;
-    String incorrectBank;
+    String incorrectBank = "";
     String[] hangmanStages = new String[] {
             "+--+ \n|    \n|    \n|    \n|    \n|    \n=========",
             "+--+ \n|  O \n|    \n|    \n|    \n|    \n=========",
@@ -141,13 +146,23 @@ class HangManGame extends HangMan {
         incorrectBank = incorrectBank + " " + s;
     }
     public void getIncorrect() {
-        System.out.println("Incorrect Guesses:" + incorrectBank.substring(4));
+        System.out.println("Incorrect Guesses:" + incorrectBank);
     }
+
+
     public void setStatusLabel() {
         statusLabel = secretWord.replaceAll("[a-zA-Z]", "_");
     }
     public void getStatusLabel() {
         System.out.println(statusLabel);
+    }
+
+    public boolean checkVictory() {
+        if(secretWord.equals(statusLabel)) {
+            System.out.println("V I C T O R Y");
+            return true;
+        }
+        return false;
     }
     public void updateStatusLabel() {
         char c = getCurrentGuess().charAt(0);
@@ -157,4 +172,56 @@ class HangManGame extends HangMan {
             }
         }
     }
+    public void startGame(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to Hangman!");
+        System.out.print("Please enter your name: ");
+
+        String playerName = scanner.nextLine().trim();
+        setPlayerLabel(playerName);
+
+        System.out.println("Hello " + playerName + "\nType \"1\" if you would like to make a custom word bank or \"0\" if you want to play with the default: " );
+        int bankBool = scanner.nextInt();
+        if (bankBool == 1) {
+            wordBank.createWordBank(); // Add this line
+            setSecretWord(true);
+        } else if (bankBool == 0) {
+            setSecretWord(false);
+        } else {
+            System.out.println("ADMIN pls put something in here to make sure its an int");
+        }
+        setStatusLabel();
+    }
+
+    public void playGame() {
+        Scanner scanner = new Scanner(System.in);
+        startGame();
+
+
+        while (!gameOver) {
+            printPlayerLabel();
+            getStage(incorrectGuesses);
+            getIncorrect();
+            getStatusLabel();
+
+            setCurrentGuess();
+            String currentGuess = getCurrentGuess().toLowerCase();
+
+            if (secretWord.contains(currentGuess)) {
+                updateStatusLabel();
+            } else {
+                incorrectGuesses++;
+                addIncorrect(currentGuess);
+            }
+
+            if (checkVictory()) {
+                System.out.println("Congratulations, " + playerLabel + "! You guessed the secret word: " + secretWord);
+                gameOver = true;
+            } else if (CheckGameOver()) {
+                System.out.println("Game over, " + playerLabel + ". The secret word was: " + secretWord);
+                gameOver = true;
+            }
+        }
+    }
+
 }
