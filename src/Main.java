@@ -4,7 +4,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 class wordBank {
-    static ArrayList<String> wordBankStatic = new ArrayList<>(Arrays.asList("apple", "banana", "cherry", "date"));
+    static ArrayList<String> wordBankStatic = new ArrayList<>(Arrays.asList("apple", "banana", "cherry", "date", "safari", "lainey", "gamer",
+            "hamid", "java", "eclipse", "ice cream", "heart", "skittles", "veganism"));
     static ArrayList<String> wordBankCustom  = new ArrayList<String>();
 
     public static void createWordBank() {
